@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.appgs.MoviesAdapter
 import com.example.appgs.R
+import com.example.appgs.TvAdapter
 import com.example.appgs.databinding.FragmentHomeBinding
 import com.example.appgs.model.MovieDBClient
 import kotlinx.coroutines.Dispatchers
@@ -41,13 +42,25 @@ class HomeFragment : Fragment() {
                 .show()
         }
 
-        binding.recycler.adapter = moviesAdapter
+        val tvAdapter = TvAdapter( emptyList() ) { tv ->
+            Toast
+                .makeText(activity, tv.name, Toast.LENGTH_SHORT)
+                .show()
+        }
+
+        binding.recycler1.adapter = moviesAdapter
+        binding.recycler2.adapter = tvAdapter
 
         lifecycleScope.launch {
             val apiKey = getString(R.string.api_key)
             val popularMovies = MovieDBClient.service.listPopularMovies(apiKey)
+            val popularTv = MovieDBClient.service.listPopularTV(apiKey)
+
             moviesAdapter.movies = popularMovies.results
             moviesAdapter.notifyDataSetChanged()
+
+            tvAdapter.tv = popularTv.results
+            tvAdapter.notifyDataSetChanged()
         }
 
 //        thread {

@@ -8,4 +8,7 @@ interface MovieDBService {
 
     @GET("movie/popular")
     suspend fun listPopularMovies(@Query("api_key") apiKey : String) : MovieDbResults
+
+    @GET("tv/popular")
+    suspend fun listPopularTV(@Query("api_key") apiKey : String) : TvDbResults
 }
