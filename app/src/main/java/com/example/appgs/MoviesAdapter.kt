@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.appgs.databinding.ViewMovieItemBinding
+import com.example.appgs.model.Movie
 
-interface MovieClickListener{
-    fun onMovieClicked(movie : Movie)
-}
+//interface MovieClickListener{
+//    fun onMovieClicked(movie : Movie) // (Movie ) -> Unit
+//}
 
 class MoviesAdapter(
-        private val movies : List<Movie>,
-        private val movieClickListener: MovieClickListener
+    var movies : List<Movie>,
+    private val movieClickListener: (Movie ) -> Unit
     ) : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,7 +31,7 @@ class MoviesAdapter(
         val movie = movies[position]
         holder.bind(movie)
         holder.itemView.setOnClickListener(){
-            movieClickListener.onMovieClicked(movie)
+            movieClickListener(movie)
         }
     }
 
@@ -42,7 +43,7 @@ class MoviesAdapter(
             binding.title.text = movie.title
             Glide
                 .with(binding.root.context)
-                .load(movie.cover)
+                .load("https://image.tmdb.org/t/p/w500${movie.poster_path}")
                 .into(binding.cover)
         }
     }
